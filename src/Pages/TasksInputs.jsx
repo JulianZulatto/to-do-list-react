@@ -1,7 +1,25 @@
 import { CButton, CContainer, CForm, CFormInput, CFormLabel } from "@coreui/react";
+import { useState } from "react";
 
 
-function TasksInputs (){
+function TasksInputs ({onAdd}){
+
+    const[newTaskText, setNewTaskText] = useState("");
+
+    const handleChangeTask = (event) =>{
+        const inputValue = event.target.value;
+
+        setNewTaskText(inputValue)
+
+    }
+
+    const handleSubmit = () =>{
+        if(newTaskText.trim() !== ""){
+            onAdd(newTaskText)
+            setNewTaskText("")
+        }
+    }
+
 
  return (
     <CContainer>
@@ -10,10 +28,12 @@ function TasksInputs (){
             <CFormInput
             type="text"
             id="new-task"
+            value={newTaskText}
+            onChange={handleChangeTask}
             placeholder="Ingrese una nueva tarea"
             aria-describedby="exampleFormControlInputHelpInline"
             />
-            <CButton color="primary" className="mt-3">Añadir Tarea</CButton>
+            <CButton color="primary" className="mt-3" onClick={handleSubmit}>Añadir Tarea</CButton>
         </CForm>
 
     </CContainer>

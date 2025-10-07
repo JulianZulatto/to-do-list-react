@@ -1,16 +1,19 @@
-import { CContainer, CFormCheck, CListGroup, CListGroupItem } from "@coreui/react";
+import { CButton, CFormCheck, CListGroup, CListGroupItem } from "@coreui/react";
 
 
-function TaskList (){
+function TaskList ({task, onDelete, onToggle}){
 
     return (
-    <CContainer>
     <CListGroup className="mt-3">
-        <CListGroupItem>
-            <CFormCheck hitArea="full" label="First checkbox" value="" id="firstCheckboxStretched"></CFormCheck>
-        </CListGroupItem>
+        {task.map((task)=>{
+            return (
+            <CListGroupItem className="d-flex justify-content-between align-items-center" key={task.id}>
+                <CFormCheck label={task.text} id={task.id} checked={task.completed} onChange={()=> onToggle(task.id)} ></CFormCheck>
+                <CButton color="danger" onClick={()=> onDelete(task.id)} size="sm">Eliminar tarea</CButton>
+            </CListGroupItem>
+            )
+        })}
     </CListGroup>
-    </CContainer>
     )
 }
 
