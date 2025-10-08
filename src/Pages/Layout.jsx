@@ -2,9 +2,11 @@ import { CCard, CCardBody, CCardHeader, CContainer } from "@coreui/react";
 import TasksInputs from "./TasksInputs";
 import TaskList from "./TaskList ";
 import { useState } from "react";
+import FilterButtons from "../Components/FilterButtons";
 
 function Layout (){
     const [tasks, setTasks] = useState([])
+    const [filterStatus, setFilterStatus] =useState("all");
 
             const handleAddTask = (newTaskText) =>{
                 const newTask = {
@@ -34,6 +36,18 @@ function Layout (){
                 })
                 setTasks(updatedTasks)
             }
+
+            const handleFilterTasks = (newStatus) =>{
+                setFilterStatus(newStatus);
+            }
+
+            let filteredTasks = tasks;
+
+            if(filterStatus === "active"){
+                filteredTasks = tasks.filter(task => !task.completed)
+            } else if (filterStatus === "completed"){
+                filteredTasks = tasks.filter(task => task.completed)
+            }
     return(
         <CContainer>
             <CCard>
@@ -42,7 +56,8 @@ function Layout (){
             </CCardHeader>
             <CCardBody>
             <TasksInputs onAdd={handleAddTask}/>
-            <TaskList task={tasks} onDelete={handleDeleteTask} onToggle={handleToggleCompleted}/>
+            <FilterButtons onFilterChange={handleFilterTasks} currentFilter={filterStatus}></FilterButtons>
+            <TaskList task={filteredTasks} onDelete={handleDeleteTask} onToggle={handleToggleCompleted}/>
             </CCardBody>
             </CCard>
         </CContainer>
